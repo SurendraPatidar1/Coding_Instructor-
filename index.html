@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Coding Instructor AI</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+</head>
+<body data-theme="dark">
+    <!-- Professional Matrix Background -->
+    <div class="matrix-bg"></div>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <button class="sidebar-toggle" id="sidebarToggle">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        
+        <div class="logo">
+            <div class="logo-icon">
+                <i class="fas fa-terminal"></i>
+            </div>
+            <div class="logo-text">CodeMaster</div>
+        </div>
+        
+        <div class="sidebar-menu">
+            <div class="menu-item active" data-section="dashboard">
+                <i class="fas fa-home"></i>
+                <span class="menu-text">Dashboard</span>
+            </div>
+            <div class="menu-item" data-section="history">
+                <i class="fas fa-history"></i>
+                <span class="menu-text">History</span>
+            </div>
+            <div class="menu-item" data-section="tutorials">
+                <i class="fas fa-book-open"></i>
+                <span class="menu-text">Tutorials</span>
+            </div>
+            <div class="menu-item" data-section="playground">
+                <i class="fas fa-code"></i>
+                <span class="menu-text">Playground</span>
+            </div>
+            <div class="menu-item" data-section="settings">
+                <i class="fas fa-cog"></i>
+                <span class="menu-text">Settings</span>
+            </div>
+        </div>
+        
+        <div class="sidebar-footer">
+            <p><i class="fas fa-microchip"></i> CodeMaster v4.0</p>
+            <p>By Surendra Patidar</p>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+        <div class="header">
+            <h1>Master Your Coding Skills</h1>
+            <div class="user-controls">
+                <button class="btn theme-toggle" id="themeToggle">
+                    <i class="fas fa-sun" id="themeIcon"></i>
+                    <span id="themeText">Light Mode</span>
+                </button>
+                <button class="btn">
+                    <i class="fas fa-user-circle"></i>
+                    <span>Profile</span>
+                </button>
+                <button class="btn" id="fullscreenBtn">
+                    <i class="fas fa-expand"></i>
+                    <span>Fullscreen</span>
+                </button>
+            </div>
+        </div>
+        
+        <div class="dashboard" id="dashboard">
+            <!-- Professional Stats Cards -->
+            <div class="card">
+                <div class="card-body">
+                    <div class="stats">
+                        <div class="stat-card">
+                            <i class="fas fa-code-branch stat-icon" style="color: var(--primary);"></i>
+                            <div class="stat-value" id="questionsCount">1,248</div>
+                            <div class="stat-label">Problems Solved</div>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-laptop-code stat-icon" style="color: var(--secondary);"></i>
+                            <div class="stat-value">24</div>
+                            <div class="stat-label">Languages</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="fas fa-fire" style="color: var(--warning);"></i> Trending Topics</h2>
+                </div>
+                <div class="card-body">
+                    <ul style="list-style-type: none; line-height: 2.8;">
+                        <li><i class="fas fa-chevron-right" style="color: var(--primary); margin-right: 15px;"></i> JavaScript ES2024 Features</li>
+                        <li><i class="fas fa-chevron-right" style="color: var(--primary); margin-right: 15px;"></i> Python Async Patterns</li>
+                        <li><i class="fas fa-chevron-right" style="color: var(--primary); margin-right: 15px;"></i> React 18 Concurrent</li>
+                        <li><i class="fas fa-chevron-right" style="color: var(--primary); margin-right: 15px;"></i> Algorithm Optimization</li>
+                        <li><i class="fas fa-chevron-right" style="color: var(--primary); margin-right: 15px;"></i> System Design</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Professional Input Section -->
+            <div class="card input-section">
+                <div class="card-header">
+                    <h2><i class="fas fa-terminal" style="color: var(--secondary);"></i> Code Query Interface</h2>
+                </div>
+                <div class="card-body">
+                    <div class="instructions">
+                        <i class="fas fa-info-circle"></i>
+                        <div>
+                            <p><strong>Your Coding Assistant:</strong> Submit your programming queries for expert-level analysis and solutions.</p>
+                            <p><strong>Specialized in:</strong> Algorithm design, code optimization, debugging, architecture patterns, and best practices.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="questionInput">
+                            <i class="fas fa-keyboard"></i>
+                            Ask Related to Coding
+                        </label>
+                        <div class="input-container">
+                            <textarea id="questionInput" placeholder="// Enter your coding question or problem here&#10;// Example: How to implement a thread-safe singleton in Python?&#10;// Example: Optimize this algorithm for O(log n) complexity"></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="input-actions">
+                        <button id="askButton">
+                            <i class="fas fa-rocket"></i>
+                            Execute
+                        </button>
+                        <button class="clear-btn" id="clearBtn">
+                            <i class="fas fa-eraser"></i>
+                            Clear
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Professional Output Section -->
+            <div class="card output-section">
+                <div class="card-header">
+                    <div class="output-header">
+                        <h2><i class="fas fa-brain" style="color: var(--success);"></i>Result Your Question</h2>
+                        <div class="output-actions">
+                            <button class="output-btn" id="copyBtn">
+                                <i class="fas fa-copy"></i> Copy
+                            </button>
+                            <button class="output-btn" id="shareBtn">
+                                <i class="fas fa-share-alt"></i> Share
+                            </button>
+                            <button class="output-btn" id="downloadBtn">
+                                <i class="fas fa-download"></i> Export
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="loading-indicator" id="loadingIndicator">
+                        <div class="spinner"></div>
+                        <div class="loading-text">Processing your query with advanced AI algorithms...</div>
+                    </div>
+                    
+                    <div class="output-container">
+                        <div id="outputArea">
+                            <h1>🚀 Welcome to CodeMaster AI!</h1>
+                            <p>Your elite coding companion for advanced programming challenges with <strong>enhanced readability</strong> and <em>professional formatting</em>.</p>
+                            
+                            <h2>🎯 Specialized Expertise</h2>
+                            <ul>
+                                <li>🧠 Advanced Algorithm Design & Analysis</li>
+                                <li>⚡ Performance Optimization & Profiling</li>
+                                <li>🏗️ Software Architecture & Design Patterns</li>
+                                <li>🔍 Code Review & Quality Assurance</li>
+                                <li>🛡️ Security Best Practices</li>
+                                <li>📊 Data Structures & Complexity Analysis</li>
+                            </ul>
+                            
+                            <h3>💻 Example Queries</h3>
+                            <p>Try these professional-level questions:</p>
+                            <div class="code-explanation">
+                                <p><code>"Implement a lock-free data structure in C++"</code></p>
+                                <p><code>"Optimize database queries for millions of records"</code></p>
+                                <p><code>"Design a microservices architecture for real-time analytics"</code></p>
+                            </div>
+                            
+                            <div class="best-practice">
+                                All responses now feature enhanced formatting with syntax highlighting, step-by-step guides, and professional code blocks with copy buttons!
+                            </div>
+                            
+                            <div class="performance-tip">
+                                Use specific programming languages in your questions for better code examples and explanations.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Professional History -->
+            <div class="card" id="historyCard" style="grid-column: span 2;">
+                <div class="card-header">
+                    <h2><i class="fas fa-database" style="color: var(--accent);"></i> Query History</h2>
+                    <button class="output-btn" id="clearHistoryBtn">
+                        <i class="fas fa-trash-alt"></i> Clear All
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div id="historyContainer" class="history-container">
+                        <div class="history-item">
+                            <div class="history-question">How to implement a thread-safe cache with TTL expiration?</div>
+                            <div class="history-time">2 hours ago</div>
+                        </div>
+                        <div class="history-item">
+                            <div class="history-question">Optimize binary search tree for concurrent access</div>
+                            <div class="history-time">1 day ago</div>
+                        </div>
+                        <div class="history-item">
+                            <div class="history-question">Design pattern for real-time event processing</div>
+                            <div class="history-time">2 days ago</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Professional FAB -->
+    <button class="fab" id="scrollToTopBtn" title="Return to Top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Notification System -->
+    <div class="notification" id="notification">
+        <i class="fas fa-check-circle"></i>
+        <span id="notificationText">System Ready</span>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
