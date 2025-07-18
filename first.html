@@ -1,0 +1,2272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Coding Instructor AI</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+        }
+
+        :root {
+            --primary: #00ff88;
+            --primary-dark: #00cc6a;
+            --secondary: #0099ff;
+            --accent: #ff6b35;
+            --success: #00ff88;
+            --warning: #ffb800;
+            --danger: #ff4757;
+            --sidebar-width: 280px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Professional Black Theme */
+        [data-theme="dark"] {
+            --bg-primary: #000000;
+            --bg-secondary: #0a0a0a;
+            --bg-tertiary: #111111;
+            --bg-card: #0d0d0d;
+            --bg-hover: rgba(0, 255, 136, 0.05);
+            --border-color: #1a1a1a;
+            --border-accent: #222222;
+            --text-primary: #ffffff;
+            --text-secondary: #cccccc;
+            --text-muted: #888888;
+            --code-bg: #050505;
+            --shadow: rgba(0, 255, 136, 0.1);
+            --dot-color: rgba(0, 255, 136, 0.1);
+        }
+
+        /* Light Theme */
+        [data-theme="light"] {
+            --bg-primary: #fafafa;
+            --bg-secondary: #f5f5f5;
+            --bg-tertiary: #e8e8e8;
+            --bg-card: #ffffff;
+            --bg-hover: rgba(0, 153, 255, 0.05);
+            --border-color: #e0e0e0;
+            --border-accent: #d0d0d0;
+            --text-primary: #1a1a1a;
+            --text-secondary: #333333;
+            --text-muted: #666666;
+            --code-bg: #f8f8f8;
+            --shadow: rgba(0, 0, 0, 0.1);
+            --dot-color: rgba(0, 153, 255, 0.1);
+        }
+
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            display: flex;
+            min-height: 100vh;
+            overflow-x: hidden;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        /* Professional Dot Pattern Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 25% 25%, var(--dot-color) 1px, transparent 1px),
+                radial-gradient(circle at 75% 75%, var(--dot-color) 1px, transparent 1px);
+            background-size: 40px 40px, 40px 40px;
+            background-position: 0 0, 20px 20px;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* Geometric Pattern Overlay */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(45deg, transparent 24%, var(--dot-color) 25%, var(--dot-color) 26%, transparent 27%, transparent 74%, var(--dot-color) 75%, var(--dot-color) 76%, transparent 77%);
+            background-size: 80px 80px;
+            opacity: 0.02;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 3px;
+            box-shadow: 0 0 5px var(--primary);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--bg-secondary);
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            padding: 30px 0;
+            border-right: 2px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+            transition: var(--transition);
+            box-shadow: 5px 0 20px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+        }
+
+        .sidebar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 1px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--primary), transparent, var(--primary));
+            opacity: 0.5;
+        }
+
+        .sidebar.collapsed {
+            width: 70px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 0 25px 30px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .logo::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 25px;
+            right: 25px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+        }
+
+        .logo-icon {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            width: 50px;
+            height: 50px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: #000000;
+            box-shadow: 
+                0 0 20px rgba(0, 255, 136, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            position: relative;
+        }
+
+        .logo-icon::before {
+            content: '';
+            position: absolute;
+            inset: 2px;
+            border-radius: 13px;
+            background: linear-gradient(135deg, transparent, rgba(255, 255, 255, 0.1));
+            pointer-events: none;
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            transition: var(--transition);
+            letter-spacing: -0.5px;
+        }
+
+        .sidebar.collapsed .logo-text {
+            opacity: 0;
+            width: 0;
+        }
+
+        .sidebar-toggle {
+            position: absolute;
+            top: 25px;
+            right: -15px;
+            background: var(--bg-card);
+            color: var(--primary);
+            border: 2px solid var(--border-accent);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            transition: var(--transition);
+        }
+
+        .sidebar-toggle:hover {
+            background: var(--primary);
+            color: #000000;
+            transform: scale(1.1);
+            box-shadow: 0 0 15px var(--primary);
+        }
+
+        .sidebar-menu {
+            padding: 0 15px;
+            flex-grow: 1;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 16px 20px;
+            border-radius: 12px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            color: var(--text-secondary);
+            position: relative;
+            border: 1px solid transparent;
+        }
+
+        .menu-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            width: 0;
+            height: 0;
+            background: var(--primary);
+            border-radius: 0 3px 3px 0;
+            transition: var(--transition);
+            transform: translateY(-50%);
+        }
+
+        .menu-item:hover {
+            background: var(--bg-hover);
+            color: var(--primary);
+            border-color: var(--border-accent);
+            transform: translateX(8px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .menu-item:hover::before {
+            width: 4px;
+            height: 60%;
+        }
+
+        .menu-item.active {
+            background: var(--bg-hover);
+            color: var(--primary);
+            border-color: var(--primary);
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.2);
+        }
+
+        .menu-item.active::before {
+            width: 4px;
+            height: 60%;
+        }
+
+        .menu-item i {
+            width: 24px;
+            text-align: center;
+            font-size: 18px;
+        }
+
+        .menu-text {
+            transition: var(--transition);
+            font-weight: 500;
+        }
+
+        .sidebar.collapsed .menu-text {
+            opacity: 0;
+            width: 0;
+        }
+
+        .sidebar-footer {
+            padding: 25px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            transition: var(--transition);
+            text-align: center;
+            position: relative;
+        }
+
+        .sidebar-footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 25px;
+            right: 25px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+        }
+
+        .sidebar.collapsed .sidebar-footer {
+            opacity: 0;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            padding: 30px;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .main-content.expanded {
+            margin-left: 70px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            padding: 25px 0;
+            position: relative;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+        }
+
+        .header h1 {
+            font-size: 2.8rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+            letter-spacing: -1px;
+        }
+
+        .header h1::before {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 0;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 2px;
+            box-shadow: 0 0 10px var(--primary);
+        }
+
+        .user-controls {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            background: var(--bg-card);
+            border: 2px solid var(--border-accent);
+            color: var(--text-primary);
+            padding: 12px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: var(--transition);
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: var(--transition);
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:hover {
+            background: var(--bg-hover);
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .theme-toggle {
+            background: var(--primary);
+            color: #000000;
+            border-color: var(--primary);
+        }
+
+        .theme-toggle:hover {
+            background: var(--primary-dark);
+            box-shadow: 0 0 20px var(--primary);
+        }
+
+        /* Dashboard Grid */
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            border: 2px solid var(--border-color);
+            overflow: hidden;
+            box-shadow: 
+                0 10px 30px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            transition: var(--transition);
+            backdrop-filter: blur(10px);
+            position: relative;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--primary));
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.4),
+                0 0 20px rgba(0, 255, 136, 0.1);
+            border-color: var(--border-accent);
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .card-header {
+            padding: 25px;
+            border-bottom: 2px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(135deg, var(--bg-secondary), transparent);
+            position: relative;
+        }
+
+        .card-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+        }
+
+        .card-header h2 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            letter-spacing: -0.3px;
+        }
+
+        .card-body {
+            padding: 30px;
+        }
+
+        /* Enhanced Stats */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 25px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary));
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--border-accent);
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            box-shadow: 0 0 10px var(--primary);
+        }
+
+        .stat-card::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle, var(--dot-color), transparent);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0.1;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .stat-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat-value {
+            font-size: 3.2rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 15px 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 1rem;
+            font-weight: 600;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Input Section */
+        .input-section {
+            grid-column: span 2;
+        }
+
+        .instructions {
+            background: linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary));
+            border-left: 4px solid var(--primary);
+            padding: 25px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+            display: flex;
+            gap: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-accent);
+            position: relative;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .instructions::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+        }
+
+        .instructions i {
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin-top: 5px;
+        }
+
+        .instructions p {
+            margin-bottom: 12px;
+            color: var(--text-primary);
+            line-height: 1.8;
+            font-weight: 500;
+        }
+
+        .form-group {
+            margin-bottom: 30px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 1.2rem;
+        }
+
+        .input-container {
+            position: relative;
+        }
+
+        textarea#questionInput {
+            width: 100%;
+            padding: 25px;
+            border: 2px solid var(--border-color);
+            border-radius: 16px;
+            font-size: 16px;
+            min-height: 200px;
+            resize: vertical;
+            transition: var(--transition);
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            font-family: 'JetBrains Mono', monospace;
+            line-height: 1.8;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        textarea#questionInput:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 
+                0 0 0 4px rgba(0, 255, 136, 0.1),
+                inset 0 2px 5px rgba(0, 0, 0, 0.1);
+            background: var(--bg-card);
+        }
+
+        textarea#questionInput::placeholder {
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        .input-actions {
+            display: flex;
+            gap: 20px;
+            margin-top: 25px;
+        }
+
+        button#askButton {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: #000000;
+            padding: 20px 35px;
+            border: none;
+            border-radius: 16px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            font-weight: 700;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            flex: 1;
+            box-shadow: 
+                0 6px 25px rgba(0, 255, 136, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        button#askButton::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: var(--transition);
+        }
+
+        button#askButton:hover::before {
+            left: 100%;
+        }
+
+        button#askButton:hover {
+            transform: translateY(-3px);
+            box-shadow: 
+                0 10px 30px rgba(0, 255, 136, 0.4),
+                0 0 20px var(--primary);
+        }
+
+        button#askButton:disabled {
+            background: var(--text-muted);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .clear-btn {
+            background: transparent;
+            border: 2px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 20px 30px;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+        }
+
+        .clear-btn:hover {
+            border-color: var(--danger);
+            color: var(--danger);
+            background: rgba(255, 71, 87, 0.1);
+            transform: translateY(-3px);
+        }
+
+        /* Output Section */
+        .output-section {
+            grid-column: span 2;
+        }
+
+        .output-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .output-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .output-btn {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 10px 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .output-btn:hover {
+            background: var(--bg-hover);
+            color: var(--primary);
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .output-container {
+            border-radius: 16px;
+            overflow: hidden;
+            border: 2px solid var(--border-color);
+            background: var(--bg-card);
+            position: relative;
+            box-shadow: 
+                0 8px 25px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        }
+
+        #outputArea {
+            padding: 40px;
+            min-height: 400px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            line-height: 1.8;
+            font-size: 17px;
+            background: transparent;
+            max-height: 700px;
+            overflow-y: auto;
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            color: var(--text-primary);
+        }
+
+        /* Enhanced Typography for Output */
+        #outputArea h1, #outputArea h2, #outputArea h3 {
+            color: var(--primary);
+            font-weight: 800;
+            margin: 30px 0 20px 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--border-accent);
+            position: relative;
+        }
+
+        #outputArea h1::after, #outputArea h2::after, #outputArea h3::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 60px;
+            height: 2px;
+            background: var(--primary);
+            box-shadow: 0 0 8px var(--primary);
+        }
+
+        #outputArea h1 {
+            font-size: 1.8rem;
+            color: var(--primary);
+        }
+
+        #outputArea h2 {
+            font-size: 1.5rem;
+            color: var(--secondary);
+        }
+
+        #outputArea h3 {
+            font-size: 1.3rem;
+            color: var(--accent);
+        }
+
+        #outputArea p {
+            margin-bottom: 20px;
+            text-align: justify;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        #outputArea strong {
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        #outputArea em {
+            color: var(--secondary);
+            font-style: italic;
+        }
+
+        /* Enhanced Lists */
+        #outputArea ul, #outputArea ol {
+            margin: 20px 0;
+            padding-left: 0;
+        }
+
+        #outputArea ul li, #outputArea ol li {
+            margin-bottom: 12px;
+            padding: 12px 20px;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            border-left: 4px solid var(--primary);
+            position: relative;
+            list-style: none;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+
+        #outputArea ul li:hover, #outputArea ol li:hover {
+            background: var(--bg-hover);
+            transform: translateX(5px);
+        }
+
+        #outputArea ul li::before {
+            content: '▶';
+            color: var(--primary);
+            font-weight: bold;
+            position: absolute;
+            left: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        #outputArea ol li::before {
+            content: counter(item);
+            counter-increment: item;
+            color: var(--primary);
+            font-weight: bold;
+            position: absolute;
+            left: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--primary);
+            color: #000;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        #outputArea ol {
+            counter-reset: item;
+        }
+
+        /* Enhanced Code Styling */
+        #outputArea code {
+            background: var(--code-bg);
+            color: var(--primary);
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            font-size: 15px;
+            border: 1px solid var(--border-accent);
+            box-shadow: 
+                0 2px 8px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            font-weight: 600;
+            position: relative;
+        }
+
+        #outputArea code::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+            opacity: 0.5;
+        }
+
+        /* Enhanced Pre/Code Blocks */
+        #outputArea pre {
+            background: var(--code-bg);
+            padding: 30px;
+            border-radius: 16px;
+            overflow-x: auto;
+            margin: 25px 0;
+            border: 2px solid var(--border-accent);
+            box-shadow: 
+                0 8px 25px rgba(0, 0, 0, 0.3),
+                inset 0 2px 0 rgba(255, 255, 255, 0.05);
+            position: relative;
+        }
+
+        #outputArea pre::before {
+            content: 'CODE';
+            position: absolute;
+            top: 8px;
+            right: 15px;
+            background: var(--primary);
+            color: #000;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        #outputArea pre code {
+            background: transparent;
+            border: none;
+            padding: 0;
+            box-shadow: none;
+            color: var(--text-primary);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* Code Language Labels */
+        #outputArea pre[data-language]::before {
+            content: attr(data-language);
+            text-transform: uppercase;
+        }
+
+        /* Enhanced Blockquotes */
+        #outputArea blockquote {
+            background: var(--bg-secondary);
+            border-left: 5px solid var(--primary);
+            margin: 25px 0;
+            padding: 20px 25px;
+            border-radius: 0 12px 12px 0;
+            position: relative;
+            font-style: italic;
+            color: var(--text-secondary);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        #outputArea blockquote::before {
+            content: '"';
+            position: absolute;
+            top: -10px;
+            left: 15px;
+            font-size: 3rem;
+            color: var(--primary);
+            opacity: 0.3;
+        }
+
+        /* Tables */
+        #outputArea table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        #outputArea th, #outputArea td {
+            padding: 15px 20px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        #outputArea th {
+            background: var(--primary);
+            color: #000;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 14px;
+            letter-spacing: 1px;
+        }
+
+        #outputArea tr:hover {
+            background: var(--bg-hover);
+        }
+
+        #outputArea tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Special Elements */
+        .code-explanation {
+            background: linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary));
+            border: 1px solid var(--border-accent);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            position: relative;
+        }
+
+        .code-explanation::before {
+            content: '💡';
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            background: var(--bg-card);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 1.2rem;
+        }
+
+        /* Performance Tips */
+        .performance-tip {
+            background: linear-gradient(135deg, rgba(255, 184, 0, 0.1), rgba(255, 184, 0, 0.05));
+            border-left: 4px solid var(--warning);
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .performance-tip::before {
+            content: '⚡ Performance Tip: ';
+            color: var(--warning);
+            font-weight: 700;
+        }
+
+        /* Security Notes */
+        .security-note {
+            background: linear-gradient(135deg, rgba(255, 71, 87, 0.1), rgba(255, 71, 87, 0.05));
+            border-left: 4px solid var(--danger);
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .security-note::before {
+            content: '🛡️ Security Note: ';
+            color: var(--danger);
+            font-weight: 700;
+        }
+
+        /* Best Practice Boxes */
+        .best-practice {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(16, 185, 129, 0.05));
+            border-left: 4px solid var(--success);
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .best-practice::before {
+            content: '✅ Best Practice: ';
+            color: var(--success);
+            font-weight: 700;
+        }
+
+        /* Step-by-step guides */
+        .step {
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-accent);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 15px 0;
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .step:hover {
+            border-color: var(--primary);
+            box-shadow: 0 4px 15px rgba(0, 255, 136, 0.1);
+        }
+
+        .step::before {
+            content: 'Step ' counter(step);
+            counter-increment: step;
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: var(--primary);
+            color: #000;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        #outputArea .steps {
+            counter-reset: step;
+        }
+
+        /* Copy button for code blocks */
+        .copy-code-btn {
+            position: absolute;
+            top: 10px;
+            right: 50px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-accent);
+            color: var(--text-secondary);
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: var(--transition);
+            z-index: 10;
+        }
+
+        .copy-code-btn:hover {
+            background: var(--primary);
+            color: #000;
+            border-color: var(--primary);
+        }
+
+        /* Syntax highlighting improvements */
+        #outputArea .keyword {
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        #outputArea .string {
+            color: var(--secondary);
+        }
+
+        #outputArea .comment {
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        #outputArea .function {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        /* Responsive text sizing */
+        @media (max-width: 768px) {
+            #outputArea {
+                padding: 25px;
+                font-size: 16px;
+                line-height: 1.7;
+            }
+            
+            #outputArea h1 {
+                font-size: 1.5rem;
+            }
+            
+            #outputArea h2 {
+                font-size: 1.3rem;
+            }
+            
+            #outputArea h3 {
+                font-size: 1.1rem;
+            }
+        }
+
+        .loading-indicator {
+            text-align: center;
+            padding: 60px;
+            display: none;
+        }
+
+        .spinner {
+            width: 80px;
+            height: 80px;
+            border: 8px solid var(--border-color);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 25px;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            margin-top: 20px;
+            font-weight: 600;
+        }
+
+        .error-message {
+            color: var(--danger);
+            background: rgba(255, 71, 87, 0.1);
+            padding: 25px;
+            border-radius: 12px;
+            margin: 20px 0;
+            border-left: 4px solid var(--danger);
+            font-weight: 600;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            border: 1px solid rgba(255, 71, 87, 0.2);
+        }
+
+        /* Question History */
+        .history-container {
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            padding: 25px;
+            margin-top: 30px;
+            border: 2px solid var(--border-color);
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .history-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .history-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--primary);
+            transform: scaleY(0);
+            transition: var(--transition);
+        }
+
+        .history-item:hover {
+            background: var(--bg-hover);
+            transform: translateX(10px);
+            border-color: var(--primary);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .history-item:hover::before {
+            transform: scaleY(1);
+        }
+
+        .history-question {
+            flex: 1;
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .history-time {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        /* Floating Action Button */
+        .fab {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: #000000;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            box-shadow: 
+                0 6px 25px rgba(0, 255, 136, 0.3),
+                0 0 20px var(--primary);
+            transition: var(--transition);
+            z-index: 1000;
+        }
+
+        .fab:hover {
+            transform: scale(1.15);
+            box-shadow: 
+                0 10px 30px rgba(0, 255, 136, 0.4),
+                0 0 30px var(--primary);
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            background: var(--bg-card);
+            color: var(--text-primary);
+            padding: 20px 25px;
+            border-radius: 12px;
+            box-shadow: 
+                0 10px 30px rgba(0, 0, 0, 0.3),
+                0 0 20px rgba(0, 255, 136, 0.2);
+            z-index: 1000;
+            transform: translateX(100%);
+            transition: var(--transition);
+            border: 2px solid var(--border-accent);
+            border-left: 4px solid var(--primary);
+            font-weight: 600;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            
+            .input-section, .output-section {
+                grid-column: span 1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            
+            .sidebar.mobile-open {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding: 20px;
+            }
+            
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2.2rem;
+            }
+            
+            .stats {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Enhanced Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes glow {
+            0%, 100% {
+                box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+            }
+            50% {
+                box-shadow: 0 0 30px rgba(0, 255, 136, 0.5);
+            }
+        }
+
+        .card {
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .card:nth-child(2) { animation-delay: 0.1s; }
+        .card:nth-child(3) { animation-delay: 0.2s; }
+        .card:nth-child(4) { animation-delay: 0.3s; }
+
+        .logo-icon {
+            animation: glow 3s ease-in-out infinite;
+        }
+
+        /* Professional touches */
+        .matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            opacity: 0.03;
+            background-image: 
+                linear-gradient(0deg, transparent 24%, var(--primary) 25%, var(--primary) 26%, transparent 27%, transparent 74%, var(--primary) 75%, var(--primary) 76%, transparent 77%, transparent),
+                linear-gradient(90deg, transparent 24%, var(--primary) 25%, var(--primary) 26%, transparent 27%, transparent 74%, var(--primary) 75%, var(--primary) 76%, transparent 77%, transparent);
+            background-size: 50px 50px;
+            z-index: -1;
+        }
+    </style>
+</head>
+<body data-theme="dark">
+    <!-- Professional Matrix Background -->
+    <div class="matrix-bg"></div>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <button class="sidebar-toggle" id="sidebarToggle">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        
+        <div class="logo">
+            <div class="logo-icon">
+                <i class="fas fa-terminal"></i>
+            </div>
+            <div class="logo-text">CodeMaster</div>
+        </div>
+        
+        <div class="sidebar-menu">
+            <div class="menu-item active" data-section="dashboard">
+                <i class="fas fa-home"></i>
+                <span class="menu-text">Dashboard</span>
+            </div>
+            <div class="menu-item" data-section="history">
+                <i class="fas fa-history"></i>
+                <span class="menu-text">History</span>
+            </div>
+            <div class="menu-item" data-section="tutorials">
+                <i class="fas fa-book-open"></i>
+                <span class="menu-text">Tutorials</span>
+            </div>
+            <div class="menu-item" data-section="playground">
+                <i class="fas fa-code"></i>
+                <span class="menu-text">Playground</span>
+            </div>
+            <div class="menu-item" data-section="settings">
+                <i class="fas fa-cog"></i>
+                <span class="menu-text">Settings</span>
+            </div>
+        </div>
+        
+        <div class="sidebar-footer">
+            <p><i class="fas fa-microchip"></i> CodeMaster v4.0</p>
+            <p>By Surendra Patidar</p>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+        <div class="header">
+            <h1>Master Your Coding Skills</h1>
+            <div class="user-controls">
+                <button class="btn theme-toggle" id="themeToggle">
+                    <i class="fas fa-sun" id="themeIcon"></i>
+                    <span id="themeText">Light Mode</span>
+                </button>
+                <button class="btn">
+                    <i class="fas fa-user-circle"></i>
+                    <span>Profile</span>
+                </button>
+                <button class="btn" id="fullscreenBtn">
+                    <i class="fas fa-expand"></i>
+                    <span>Fullscreen</span>
+                </button>
+            </div>
+        </div>
+        
+        <div class="dashboard" id="dashboard">
+            <!-- Professional Stats Cards -->
+            <div class="card">
+                <div class="card-body">
+                    <div class="stats">
+                        <div class="stat-card">
+                            <i class="fas fa-code-branch stat-icon" style="color: var(--primary);"></i>
+                            <div class="stat-value" id="questionsCount">1,248</div>
+                            <div class="stat-label">Problems Solved</div>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-laptop-code stat-icon" style="color: var(--secondary);"></i>
+                            <div class="stat-value">24</div>
+                            <div class="stat-label">Languages</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="fas fa-fire" style="color: var(--warning);"></i> Trending Topics</h2>
+                </div>
+                <div class="card-body">
+                    <ul style="list-style-type: none; line-height: 2.8;">
+                        <li><i class="fas fa-chevron-right" style="color: var(--primary); margin-right: 15px;"></i> JavaScript ES2024 Features</li>
+                        <li><i class="fas fa-chevron-right" style="color: var(--primary); margin-right: 15px;"></i> Python Async Patterns</li>
+                        <li><i class="fas fa-chevron-right" style="color: var(--primary); margin-right: 15px;"></i> React 18 Concurrent</li>
+                        <li><i class="fas fa-chevron-right" style="color: var(--primary); margin-right: 15px;"></i> Algorithm Optimization</li>
+                        <li><i class="fas fa-chevron-right" style="color: var(--primary); margin-right: 15px;"></i> System Design</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Professional Input Section -->
+            <div class="card input-section">
+                <div class="card-header">
+                    <h2><i class="fas fa-terminal" style="color: var(--secondary);"></i> Code Query Interface</h2>
+                </div>
+                <div class="card-body">
+                    <div class="instructions">
+                        <i class="fas fa-info-circle"></i>
+                        <div>
+                            <p><strong>Your Coding Assistant:</strong> Submit your programming queries for expert-level analysis and solutions.</p>
+                            <p><strong>Specialized in:</strong> Algorithm design, code optimization, debugging, architecture patterns, and best practices.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="questionInput">
+                            <i class="fas fa-keyboard"></i>
+                            Ask Related to Coding
+                        </label>
+                        <div class="input-container">
+                            <textarea id="questionInput" placeholder="// Enter your coding question or problem here&#10;// Example: How to implement a thread-safe singleton in Python?&#10;// Example: Optimize this algorithm for O(log n) complexity"></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="input-actions">
+                        <button id="askButton">
+                            <i class="fas fa-rocket"></i>
+                            Execute
+                        </button>
+                        <button class="clear-btn" id="clearBtn">
+                            <i class="fas fa-eraser"></i>
+                            Clear
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Professional Output Section -->
+            <div class="card output-section">
+                <div class="card-header">
+                    <div class="output-header">
+                        <h2><i class="fas fa-brain" style="color: var(--success);"></i>Result Your Question</h2>
+                        <div class="output-actions">
+                            <button class="output-btn" id="copyBtn">
+                                <i class="fas fa-copy"></i> Copy
+                            </button>
+                            <button class="output-btn" id="shareBtn">
+                                <i class="fas fa-share-alt"></i> Share
+                            </button>
+                            <button class="output-btn" id="downloadBtn">
+                                <i class="fas fa-download"></i> Export
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="loading-indicator" id="loadingIndicator">
+                        <div class="spinner"></div>
+                        <div class="loading-text">Processing your query with advanced AI algorithms...</div>
+                    </div>
+                    
+                    <div class="output-container">
+                        <div id="outputArea">
+                            <h1>🚀 Welcome to CodeMaster AI!</h1>
+                            <p>Your elite coding companion for advanced programming challenges with <strong>enhanced readability</strong> and <em>professional formatting</em>.</p>
+                            
+                            <h2>🎯 Specialized Expertise</h2>
+                            <ul>
+                                <li>🧠 Advanced Algorithm Design & Analysis</li>
+                                <li>⚡ Performance Optimization & Profiling</li>
+                                <li>🏗️ Software Architecture & Design Patterns</li>
+                                <li>🔍 Code Review & Quality Assurance</li>
+                                <li>🛡️ Security Best Practices</li>
+                                <li>📊 Data Structures & Complexity Analysis</li>
+                            </ul>
+                            
+                            <h3>💻 Example Queries</h3>
+                            <p>Try these professional-level questions:</p>
+                            <div class="code-explanation">
+                                <p><code>"Implement a lock-free data structure in C++"</code></p>
+                                <p><code>"Optimize database queries for millions of records"</code></p>
+                                <p><code>"Design a microservices architecture for real-time analytics"</code></p>
+                            </div>
+                            
+                            <div class="best-practice">
+                                All responses now feature enhanced formatting with syntax highlighting, step-by-step guides, and professional code blocks with copy buttons!
+                            </div>
+                            
+                            <div class="performance-tip">
+                                Use specific programming languages in your questions for better code examples and explanations.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Professional History -->
+            <div class="card" id="historyCard" style="grid-column: span 2;">
+                <div class="card-header">
+                    <h2><i class="fas fa-database" style="color: var(--accent);"></i> Query History</h2>
+                    <button class="output-btn" id="clearHistoryBtn">
+                        <i class="fas fa-trash-alt"></i> Clear All
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div id="historyContainer" class="history-container">
+                        <div class="history-item">
+                            <div class="history-question">How to implement a thread-safe cache with TTL expiration?</div>
+                            <div class="history-time">2 hours ago</div>
+                        </div>
+                        <div class="history-item">
+                            <div class="history-question">Optimize binary search tree for concurrent access</div>
+                            <div class="history-time">1 day ago</div>
+                        </div>
+                        <div class="history-item">
+                            <div class="history-question">Design pattern for real-time event processing</div>
+                            <div class="history-time">2 days ago</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Professional FAB -->
+    <button class="fab" id="scrollToTopBtn" title="Return to Top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Notification System -->
+    <div class="notification" id="notification">
+        <i class="fas fa-check-circle"></i>
+        <span id="notificationText">System Ready</span>
+    </div>
+
+    <script>
+        // All the previous JavaScript code remains the same, just updating some text references
+        const questionInput = document.getElementById('questionInput');
+        const askButton = document.getElementById('askButton');
+        const clearBtn = document.getElementById('clearBtn');
+        const outputArea = document.getElementById('outputArea');
+        const loadingIndicator = document.getElementById('loadingIndicator');
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const themeText = document.getElementById('themeText');
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('mainContent');
+        const fullscreenBtn = document.getElementById('fullscreenBtn');
+        const copyBtn = document.getElementById('copyBtn');
+        const shareBtn = document.getElementById('shareBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+        const notification = document.getElementById('notification');
+        const notificationText = document.getElementById('notificationText');
+        const historyContainer = document.getElementById('historyContainer');
+        const clearHistoryBtn = document.getElementById('clearHistoryBtn');
+        const questionsCount = document.getElementById('questionsCount');
+
+        // Configuration
+        const GEMINI_API_KEY = "AIzaSyAlzOv8T5lIGKp1ObvREwjhp8eIrPwYzw4";
+        const MODEL_NAME = "gemini-1.5-flash";
+        const systemInstructionText = `You are a Professional Coding Mentor, Expert Developer, and Instructor.  
+You specialize in solving coding problems, explaining code, and teaching concepts clearly.  
+
+🎯 When a user asks a coding question:
+- Always generate **working, production-ready code**.
+- Break down the code step-by-step, explaining what each part does.
+- Include a **simple, real-life analogy or example** to make it relatable.
+- Provide at least one **sample input and output (test case)**, and explain how the code handles it.
+- Highlight any best practices, performance considerations, or potential edge cases.
+- Keep the code clean, idiomatic, and easy to read, even for beginners.
+
+🚫 If the user asks a non-coding-related question:
+- Politely decline and redirect them to coding topics only.
+
+💡 Always be educational and encouraging, aiming to help the user understand and learn, not just copy the answer.`;
+
+        // State
+        let currentTheme = 'dark';
+        let questionHistory = JSON.parse(localStorage.getItem('questionHistory') || '[]');
+        let totalQuestions = parseInt(localStorage.getItem('totalQuestions') || '1248');
+        let sidebarCollapsed = false;
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            loadTheme();
+            updateQuestionsCount();
+            renderHistory();
+            initializeEventListeners();
+            showNotification('CodeMaster Professional Ready');
+        });
+
+        // Theme Management
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            currentTheme = savedTheme;
+            document.body.setAttribute('data-theme', currentTheme);
+            updateThemeButton();
+        }
+
+        function toggleTheme() {
+            currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            document.body.setAttribute('data-theme', currentTheme);
+            localStorage.setItem('theme', currentTheme);
+            updateThemeButton();
+            showNotification(`Switched to ${currentTheme} mode`);
+        }
+
+        function updateThemeButton() {
+            if (currentTheme === 'dark') {
+                themeIcon.className = 'fas fa-sun';
+                themeText.textContent = 'Light Mode';
+            } else {
+                themeIcon.className = 'fas fa-moon';
+                themeText.textContent = 'Dark Mode';
+            }
+        }
+
+        // Sidebar Management
+        function toggleSidebar() {
+            sidebarCollapsed = !sidebarCollapsed;
+            if (sidebarCollapsed) {
+                sidebar.classList.add('collapsed');
+                mainContent.classList.add('expanded');
+                sidebarToggle.innerHTML = '<i class="fas fa-chevron-right"></i>';
+            } else {
+                sidebar.classList.remove('collapsed');
+                mainContent.classList.remove('expanded');
+                sidebarToggle.innerHTML = '<i class="fas fa-chevron-left"></i>';
+            }
+        }
+
+        // Fullscreen Management
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().then(() => {
+                    fullscreenBtn.innerHTML = '<i class="fas fa-compress"></i><span>Exit Fullscreen</span>';
+                    showNotification('Fullscreen Mode Activated');
+                });
+            } else {
+                document.exitFullscreen().then(() => {
+                    fullscreenBtn.innerHTML = '<i class="fas fa-expand"></i><span>Fullscreen</span>';
+                    showNotification('Fullscreen Mode Deactivated');
+                });
+            }
+        }
+
+        // Clear Functions
+        function clearInput() {
+            questionInput.value = '';
+            questionInput.focus();
+            showNotification('Input Buffer Cleared');
+        }
+
+        function clearOutput() {
+            outputArea.innerHTML = `
+                <h1>🚀 Welcome to Professional CodeMaster AI!</h1>
+                <p>Your elite coding companion for advanced programming challenges with <strong>enhanced readability</strong> and <em>professional formatting</em>.</p>
+                
+                <h2>🎯 Specialized Expertise</h2>
+                <ul>
+                    <li>🧠 Advanced Algorithm Design & Analysis</li>
+                    <li>⚡ Performance Optimization & Profiling</li>
+                    <li>🏗️ Software Architecture & Design Patterns</li>
+                    <li>🔍 Code Review & Quality Assurance</li>
+                    <li>🛡️ Security Best Practices</li>
+                    <li>📊 Data Structures & Complexity Analysis</li>
+                </ul>
+                
+                <h3>💻 Example Queries</h3>
+                <p>Try these professional-level questions:</p>
+                <div class="code-explanation">
+                    <p><code>"Implement a lock-free data structure in C++"</code></p>
+                    <p><code>"Optimize database queries for millions of records"</code></p>
+                    <p><code>"Design a microservices architecture for real-time analytics"</code></p>
+                </div>
+                
+                <div class="best-practice">
+                    All responses now feature enhanced formatting with syntax highlighting, step-by-step guides, and professional code blocks with copy buttons!
+                </div>
+                
+                <div class="performance-tip">
+                    Use specific programming languages in your questions for better code examples and explanations.
+                </div>
+            `;
+            showNotification('Output Console Cleared');
+        }
+
+        // History Management
+        function addToHistory(question) {
+            const historyItem = {
+                question: question,
+                timestamp: new Date().toISOString(),
+                id: Date.now()
+            };
+            
+            questionHistory.unshift(historyItem);
+            questionHistory = questionHistory.slice(0, 10);
+            
+            localStorage.setItem('questionHistory', JSON.stringify(questionHistory));
+            renderHistory();
+            
+            totalQuestions++;
+            localStorage.setItem('totalQuestions', totalQuestions.toString());
+            updateQuestionsCount();
+        }
+
+        function renderHistory() {
+            if (questionHistory.length === 0) {
+                historyContainer.innerHTML = '<p style="text-align: center; color: var(--text-muted); padding: 30px; font-style: italic;">No queries in history. Start by submitting your first coding question!</p>';
+                return;
+            }
+
+            historyContainer.innerHTML = questionHistory.map(item => `
+                <div class="history-item" onclick="loadHistoryQuestion('${item.id}')">
+                    <div class="history-question">${item.question.substring(0, 90)}${item.question.length > 90 ? '...' : ''}</div>
+                    <div class="history-time">${formatTime(item.timestamp)}</div>
+                </div>
+            `).join('');
+        }
+
+        function loadHistoryQuestion(id) {
+            const item = questionHistory.find(h => h.id == id);
+            if (item) {
+                questionInput.value = item.question;
+                questionInput.focus();
+                showNotification('Query Loaded from History');
+            }
+        }
+
+        function clearHistory() {
+            questionHistory = [];
+            localStorage.setItem('questionHistory', JSON.stringify(questionHistory));
+            renderHistory();
+            showNotification('Query History Cleared');
+        }
+
+        function formatTime(timestamp) {
+            const now = new Date();
+            const time = new Date(timestamp);
+            const diff = now - time;
+            
+            if (diff < 60000) return 'Just now';
+            if (diff < 3600000) return `${Math.floor(diff / 60000)} minutes ago`;
+            if (diff < 86400000) return `${Math.floor(diff / 3600000)} hours ago`;
+            return `${Math.floor(diff / 86400000)} days ago`;
+        }
+
+        function updateQuestionsCount() {
+            questionsCount.textContent = totalQuestions.toLocaleString();
+        }
+
+        // Utility Functions
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function addCopyButtonsToCodeBlocks() {
+            const codeBlocks = outputArea.querySelectorAll('pre code');
+            codeBlocks.forEach(block => {
+                const button = document.createElement('button');
+                button.className = 'copy-code-btn';
+                button.innerHTML = '<i class="fas fa-copy"></i>';
+                button.title = 'Copy code';
+                button.onclick = () => {
+                    navigator.clipboard.writeText(block.textContent).then(() => {
+                        button.innerHTML = '<i class="fas fa-check"></i>';
+                        setTimeout(() => {
+                            button.innerHTML = '<i class="fas fa-copy"></i>';
+                        }, 2000);
+                        showNotification('Code copied to clipboard');
+                    });
+                };
+                
+                const pre = block.parentElement;
+                if (!pre.querySelector('.copy-code-btn')) {
+                    pre.style.position = 'relative';
+                    pre.appendChild(button);
+                }
+            });
+        }
+
+        function showNotification(message) {
+            notificationText.textContent = message;
+            notification.classList.add('show');
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3500);
+        }
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showNotification('Response Copied to Clipboard');
+            }).catch(() => {
+                showNotification('Copy Operation Failed');
+            });
+        }
+
+        function downloadResponse() {
+            const content = outputArea.textContent;
+            const blob = new Blob([content], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `codemaster-response-${Date.now()}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showNotification('Response Exported Successfully');
+        }
+
+        function shareResponse() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'CodeMaster AI Professional Response',
+                    text: outputArea.textContent
+                }).then(() => {
+                    showNotification('Response Shared Successfully');
+                }).catch(() => {
+                    copyToClipboard(outputArea.textContent);
+                });
+            } else {
+                copyToClipboard(outputArea.textContent);
+            }
+        }
+
+        // Main AI Function
+        async function askQuestion() {
+            const question = questionInput.value.trim();
+
+            if (!question) {
+                outputArea.innerHTML = '<div class="error-message"><i class="fas fa-exclamation-triangle"></i> Please submit a coding query first!</div>';
+                return;
+            }
+
+            addToHistory(question);
+            outputArea.innerHTML = '';
+            loadingIndicator.style.display = 'block';
+            askButton.disabled = true;
+
+            const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=${`AIzaSyCTxnBGaN-2Las67QEwPY3XehpbeNwdGmM`}`;
+
+            const requestBody = {
+                contents: [
+                    {
+                        role: "user",
+                        parts: [
+                            { text: question }
+                        ]
+                    }
+                ],
+                systemInstruction: {
+                    parts: [
+                        { text: systemInstructionText }
+                    ]
+                }
+            };
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(requestBody),
+                });
+
+                if (!response.ok) {
+                    let errorMsg = `API Error: ${response.status}`;
+                    let errorDetails = "Could not retrieve error details.";
+                    try {
+                        const errorData = await response.json();
+                        if (errorData.error && errorData.error.message) {
+                           errorDetails = errorData.error.message;
+                        }
+                        errorMsg = `${errorMsg} - ${errorDetails}`;
+                        if (errorData.error && errorData.error.status) {
+                            errorMsg += ` (Status: ${errorData.error.status})`;
+                        }
+                        if (errorDetails.toLowerCase().includes("api key not valid") || errorDetails.toLowerCase().includes("permission denied")) {
+                            errorMsg += "<br><strong>Please verify your API key configuration in Google Cloud Console.</strong>";
+                        }
+                    } catch (parseError) {
+                        errorMsg = `${errorMsg} (Could not parse error response: ${response.statusText})`;
+                    }
+                    throw new Error(errorMsg);
+                }
+
+                const data = await response.json();
+
+                if (data.candidates && data.candidates.length > 0 &&
+                    data.candidates[0].content && data.candidates[0].content.parts && data.candidates[0].content.parts.length > 0) {
+                    const answerText = data.candidates[0].content.parts[0].text;
+                    
+                    let formattedText = answerText;
+                    
+                    // Enhanced code block formatting with language detection
+                    formattedText = formattedText.replace(/(```(\w+)?\n?)([\s\S]*?)(```)/g, (match, start, language, code, end) => {
+                        const lang = language || 'code';
+                        const cleanCode = code.trim();
+                        return `<pre data-language="${lang}"><code class="language-${lang}">${escapeHtml(cleanCode)}</code></pre>`;
+                    });
+                    
+                    // Enhanced inline code formatting
+                    formattedText = formattedText.replace(/`([^`]+)`/g, '<code>$1</code>');
+                    
+                    // Format headers
+                    formattedText = formattedText.replace(/^### (.*$)/gm, '<h3>$1</h3>');
+                    formattedText = formattedText.replace(/^## (.*$)/gm, '<h2>$1</h2>');
+                    formattedText = formattedText.replace(/^# (.*$)/gm, '<h1>$1</h1>');
+                    
+                    // Format bold and italic
+                    formattedText = formattedText.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                    formattedText = formattedText.replace(/\*(.*?)\*/g, '<em>$1</em>');
+                    
+                    // Format special sections
+                    formattedText = formattedText.replace(/^(Best Practice|Performance Tip|Security Note):(.*$)/gm, (match, type, content) => {
+                        const className = type.toLowerCase().replace(' ', '-');
+                        return `<div class="${className}">${content.trim()}</div>`;
+                    });
+                    
+                    // Split into sections and process
+                    const sections = formattedText.split('\n\n');
+                    let htmlOutput = '';
+                    let inSteps = false;
+                    
+                    for (let i = 0; i < sections.length; i++) {
+                        const section = sections[i].trim();
+                        if (!section) continue;
+                        
+                        // Check for step-by-step patterns
+                        if (section.match(/^(Step \d+|1\.|2\.|3\.|4\.|5\.)/)) {
+                            if (!inSteps) {
+                                htmlOutput += '<div class="steps">';
+                                inSteps = true;
+                            }
+                            htmlOutput += `<div class="step">${section.replace(/^(Step \d+|1\.|2\.|3\.|4\.|5\.)/, '')}</div>`;
+                        } else {
+                            if (inSteps) {
+                                htmlOutput += '</div>';
+                                inSteps = false;
+                            }
+                            
+                            // Handle lists
+                            if (section.includes('- ') || section.includes('* ')) {
+                                const listItems = section.split('\n').filter(item => item.trim());
+                                const isOrdered = listItems.some(item => item.match(/^\d+\./));
+                                
+                                htmlOutput += isOrdered ? '<ol>' : '<ul>';
+                                for (const item of listItems) {
+                                    if (item.trim().startsWith('- ') || item.trim().startsWith('* ')) {
+                                        htmlOutput += `<li>${item.trim().substring(2)}</li>`;
+                                    } else if (item.match(/^\d+\./)) {
+                                        htmlOutput += `<li>${item.replace(/^\d+\./, '').trim()}</li>`;
+                                    }
+                                }
+                                htmlOutput += isOrdered ? '</ol>' : '</ul>';
+                            }
+                            // Handle headers (already processed above)
+                            else if (section.startsWith('<h1>') || section.startsWith('<h2>') || section.startsWith('<h3>')) {
+                                htmlOutput += section;
+                            }
+                            // Handle code blocks (already processed above)
+                            else if (section.startsWith('<pre>')) {
+                                htmlOutput += section;
+                            }
+                            // Handle special sections (already processed above)
+                            else if (section.startsWith('<div class=')) {
+                                htmlOutput += section;
+                            }
+                            // Regular paragraphs
+                            else {
+                                // Add code explanation wrapper for paragraphs that explain code
+                                if (section.toLowerCase().includes('explanation') || section.toLowerCase().includes('how it works')) {
+                                    htmlOutput += `<div class="code-explanation"><p>${section}</p></div>`;
+                                } else {
+                                    htmlOutput += `<p>${section}</p>`;
+                                }
+                            }
+                        }
+                    }
+                    
+                    if (inSteps) {
+                        htmlOutput += '</div>';
+                    }
+                    
+                    // Enhance syntax highlighting for common keywords
+                    htmlOutput = htmlOutput.replace(/\b(function|class|const|let|var|return|if|else|for|while|try|catch|async|await|import|export)\b/g, '<span class="keyword">$1</span>');
+                    htmlOutput = htmlOutput.replace(/(['"`])((?:(?!\1)[^\\]|\\.)*)(\1)/g, '<span class="string">$1$2$3</span>');
+                    htmlOutput = htmlOutput.replace(/(\/\/.*$|\/\*[\s\S]*?\*\/)/gm, '<span class="comment">$1</span>');
+                    
+                    outputArea.innerHTML = htmlOutput;
+                    
+                    // Add copy buttons to code blocks
+                    addCopyButtonsToCodeBlocks();
+                    
+                    showNotification('Query Processed Successfully');
+                } else if (data.promptFeedback && data.promptFeedback.blockReason) {
+                     outputArea.innerHTML = `<div class="error-message"><i class="fas fa-shield-alt"></i> Query blocked: ${data.promptFeedback.blockReason}. ${data.promptFeedback.blockReasonMessage || ''}</div>`;
+                } else {
+                    console.warn("Unexpected response structure:", data);
+                    outputArea.innerHTML = '<div class="error-message"><i class="fas fa-exclamation-triangle"></i> Unexpected response format from AI service.</div>';
+                }
+
+            } catch (error) {
+                console.error('Frontend Error:', error);
+                outputArea.innerHTML = `<div class="error-message"><i class="fas fa-bug"></i> Query failed: ${error.message}</div>`;
+            } finally {
+                askButton.disabled = false;
+                loadingIndicator.style.display = 'none';
+            }
+        }
+
+        // Event Listeners
+        function initializeEventListeners() {
+            askButton.addEventListener('click', askQuestion);
+            clearBtn.addEventListener('click', clearInput);
+            themeToggle.addEventListener('click', toggleTheme);
+            sidebarToggle.addEventListener('click', toggleSidebar);
+            fullscreenBtn.addEventListener('click', toggleFullscreen);
+            copyBtn.addEventListener('click', () => copyToClipboard(outputArea.textContent));
+            shareBtn.addEventListener('click', shareResponse);
+            downloadBtn.addEventListener('click', downloadResponse);
+            clearHistoryBtn.addEventListener('click', clearHistory);
+            
+            scrollToTopBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            window.addEventListener('scroll', () => {
+                if (window.pageYOffset > 300) {
+                    scrollToTopBtn.style.display = 'flex';
+                } else {
+                    scrollToTopBtn.style.display = 'none';
+                }
+            });
+
+            questionInput.addEventListener('keypress', function(event) {
+                if (event.key === 'Enter' && !event.shiftKey) {
+                    event.preventDefault();
+                    askQuestion();
+                }
+            });
+
+            document.querySelectorAll('.menu-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    document.querySelectorAll('.menu-item').forEach(i => i.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    const section = this.getAttribute('data-section');
+                    showNotification(`Navigated to ${section.charAt(0).toUpperCase() + section.slice(1)}`);
+                });
+            });
+
+            document.addEventListener('keydown', function(event) {
+                if ((event.ctrlKey || event.metaKey) && event.key === 'd') {
+                    event.preventDefault();
+                    toggleTheme();
+                }
+                
+                if ((event.ctrlKey || event.metaKey) && event.key === 'Enter') {
+                    event.preventDefault();
+                    askQuestion();
+                }
+                
+                if (event.key === 'Escape') {
+                    clearInput();
+                }
+            });
+        }
+
+        function handleResize() {
+            if (window.innerWidth <= 768) {
+                sidebar.classList.add('collapsed');
+                mainContent.classList.add('expanded');
+            } else if (!sidebarCollapsed) {
+                sidebar.classList.remove('collapsed');
+                mainContent.classList.remove('expanded');
+            }
+        }
+
+        window.addEventListener('resize', handleResize);
+        handleResize();
+    </script>
+</body>
+</html>
